@@ -20,9 +20,9 @@ export default function App_v4 (props: App_v4Props){
         + roomId
         + '/'
     );
-    const boxRef = React.useRef<HTMLTextAreaElement>(null!)
-    const messageRef = React.useRef<HTMLInputElement>(null!)
-    const submitRef = React.useRef<HTMLInputElement>(null!)
+    const boxRef = React.useRef<HTMLParagraphElement>(null!)
+    const messageRef = React.useRef<HTMLParagraphElement>(null!)
+    const submitRef = React.useRef<HTMLDivElement>(null!)
 
 
     React.useEffect(()=>{
@@ -35,7 +35,7 @@ export default function App_v4 (props: App_v4Props){
 
         socket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            boxRef.current.value += (data.message + '\n');
+            boxRef.current.innerText += (data.message);
         };
     
         socket.onclose = function(e) {
@@ -46,20 +46,56 @@ export default function App_v4 (props: App_v4Props){
 
     const submit = (e: any) => {
         const messageInputDom = messageRef.current;
-        const message = messageInputDom.value;
-        socket.send(JSON.stringify({
-            'message': message
-        }));
-        messageInputDom.value = '';
+        const message = messageInputDom.innerText;
+        if(message.length == 1){
+            socket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInputDom.innerText = '';
+        }
+        else{
+            alert("Please only enter 1 character.")
+        }
     };
 
     return (
     <div className='App_v4' style={{...{
 
     }, ...props.style}}>
-            <textarea id="chat-log" ref={boxRef} cols={100} rows={20}></textarea>
-            <input id="chat-message-input" ref={messageRef} type="text" size={100} />
-            <input id="chat-message-submit" type="button" ref={submitRef} value="Send" onClick={submit}></input>
+            <p id="Word" ref={boxRef} style={{
+                fontSize: 60,
+                color: "#ffffdd",
+            }}> </p>
+            <div style={{
+                display: "flex",
+                
+            }}>
+                <p id="LetterInput" ref={messageRef} contentEditable style={{
+                    height: 40,
+                    width: 40,
+                    background: "#444444",
+                    borderRadius: 10,
+                    margin: 0,
+                    marginRight: 10,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}/>
+                <div id="MoveSubmit" ref={submitRef} onClick={submit} style={{
+                    backgroundColor: "#444444",
+                    paddingLeft: 10,
+                    paddingRight: 10,
+                    borderRadius: 10,
+                    height: 40,
+                    width: "fit-content",
+                    display: "flex",
+                    alignItems: "center",
+                }}>
+                    <p style={{
+
+                    }}>Submit move</p>
+                </div>
+            </div>
     </div>
     )
 }

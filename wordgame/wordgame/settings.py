@@ -39,7 +39,8 @@ CHANNEL_LAYERS = {
 }
 
 INSTALLED_APPS = [
-    'v4',
+    'corsheaders',
+    'v4.apps.V4Config',
     'channels',
     'daphne',
     'django.contrib.admin',
@@ -50,6 +51,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -58,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'wordgame.urls'

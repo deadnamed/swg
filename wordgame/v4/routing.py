@@ -1,6 +1,7 @@
-from django.urls import re_path
+from django.urls import re_path, path
 
-from . import consumers
+from . import consumers, views
+from .views import authenticate_user
 
 websocket_urlpatterns = [
     re_path(r"ws/wordgame_v4/(?P<room_name>\w+)/$", consumers.ChatConsumer.as_asgi()),
