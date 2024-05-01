@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Account
+from .models import Account, Room
 
 # Create your views here.
 def index(request):
@@ -35,3 +35,19 @@ def get_username_from_token(request, token):
     if(get_user_from_token(token)=="no user"):
         return HttpResponse("no user")
     return HttpResponse(get_user_from_token(token).name)
+
+def view_room_info_HTTP(request, room_name):
+    room = Room.objects.filter(name = room_name)
+    if(len(room) == 0):
+        return HttpResponse("invalid room name")
+    return HttpResponse(json.dumps({
+        "name": room[0].name,
+        "word": room[0].word,
+        "players": room[0].account_set
+    }))
+
+def get_room(request, room_name):
+    room = Room.objects.filter(name = room_name)
+    if(len(room) == 0):
+        return "no room with specified name"
+    return room[0]

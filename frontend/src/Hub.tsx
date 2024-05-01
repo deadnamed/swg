@@ -27,7 +27,7 @@ export default function Hub (props: HubProps){
                     window.location.href = window.location.href + "login/"
                 }
                 else{
-                    accountNameRef.current.innerText += " " + response.data
+                    accountNameRef.current.innerText = "Current account: " + response.data
                 }
             })
         }
